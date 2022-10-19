@@ -1,7 +1,26 @@
 <script setup>
-function sendUserData(){
+window.addEventListener("keypress", (event)=> {
   let display= document.querySelector('h1')
-  console.log(display.innerHTML)
+  let projectile= document.querySelector('#ball')
+  let leftPaddle=document.querySelector('.left')
+  let rightPaddle=document.querySelector('.right')
+  let width=window.innerWidth
+  let height=window.innerHeight
+  let key=event.key
+if(key== 'w'){
+leftPaddle.style=`
+top:${leftPaddle.getBoundingClientRect().y +1 +'px' }
+`
+}
+else if(key== 's'){
+  leftPaddle.style=`
+top:${leftPaddle.getBoundingClientRect().y -1 +'px' }
+`
+}
+}
+  );
+function sendUserData(){
+let startTime= Date.now()
 }
   
 </script>
