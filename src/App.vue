@@ -6,61 +6,94 @@ onMounted(() => {
   let projectile = document.querySelector("#ball");
   let leftPaddle = document.querySelector(".left");
   let width = window.innerWidth;
+  let intialY;
   let height = window.innerHeight;
   let initialDirection;
-  let rankSpeed= 100
+  let rankSpeed = 100;
   let displacement = 1;
   let rightPaddle = document.querySelector(".right");
   let startTime = Date.now();
+  if (Math.round(Math.random() * 10) < 5) {
+    intialY = () => {
+      return projectile.getBoundingClientRect().bottom + displacement + "px";
+    };
+  } else {
+    intialY = () => {
+      return projectile.getBoundingClientRect().y + displacement + "px";
+    };
+  }
+  function checkBoundary() {
+    if (
+      projectile.getBoundingClientRect().top > 0 &&
+      projectile.getBoundingClientRect().bottom < height
+    ) {
+      return intialY();
+    } else {
+      let transientValue = String(intialY);
+      console.log(transientValue);
+      if (transientValue.includes("bottom")) {
+        return projectile.getBoundingClientRect().y + displacement + "px";
+      } else {
+        return projectile.getBoundingClientRect().bottom + displacement + "px";
+      }
+    }
+  }
   window.addEventListener("keypress", (event) => {
     let key = event.key;
     if (key == "q" && leftPaddle.getBoundingClientRect().y > 0) {
       leftPaddle.style = `
-      top:${(leftPaddle.getBoundingClientRect().y + displacement) + 'px'};
+      top:${leftPaddle.getBoundingClientRect().y + displacement + "px"};
       `;
       rightPaddle.style = `
-    top:${(rightPaddle.getBoundingClientRect().y + displacement) + 'px'};
+    top:${rightPaddle.getBoundingClientRect().y + displacement + "px"};
     `;
     } else if (
       key == "a" &&
       leftPaddle.getBoundingClientRect().bottom < height
     ) {
       leftPaddle.style = `
-      top:${(leftPaddle.getBoundingClientRect().bottom + displacement) + 'px'};
+      top:${leftPaddle.getBoundingClientRect().bottom + displacement + "px"};
       `;
       rightPaddle.style = `
-    top:${(rightPaddle.getBoundingClientRect().bottom + displacement) + 'px'};
+    top:${rightPaddle.getBoundingClientRect().bottom + displacement + "px"};
     `;
-    }
-     else if (key == " ") {
-      rankSpeed>1?rankSpeed-10:rankSpeed
-let intialSetting= Math.round(Math.random()*10)
-      if( Math.round(Math.random()*10)>5){
-        initialDirection=()=>{
-          return (projectile.getBoundingClientRect().right + displacement) + 'px'
-        }
-            }else {
-              initialDirection= ()=>{
-                return (projectile.getBoundingClientRect().left +  displacement) +'px'
-              }
-            }
+    } else if (key == " ") {
+      rankSpeed > 1 ? rankSpeed - 10 : rankSpeed;
+      let intialSetting = Math.round(Math.random() * 10);
+      if (
+        Math.round(Math.random() * 10) > 5 ||
+        projectile.getBoundingClientRect().y ==
+          leftPaddle.getBoundingClientRect().y
+      ) {
+        initialDirection = () => {
+          return projectile.getBoundingClientRect().right + displacement + "px";
+        };
+      } else if (
+        Math.round(Math.random() * 10) < 5 ||
+        projectile.getBoundingClientRect().y ==
+          rightPaddle.getBoundingClientRect().y
+      ) {
+        initialDirection = () => {
+          return projectile.getBoundingClientRect().left + displacement + "px";
+        };
+      }
       function sendUserData() {
-        let progressiveDirectionX=initialDirection()
-        if (projectile.getBoundingClientRect().left < width && projectile.getBoundingClientRect().right > 0) {
-            projectile.style = `
-            left:${progressiveDirectionX};
-top:${
-  console.log(initialDirection())
-}
+        let progressiveDirectionX = initialDirection();
+        if (
+          projectile.getBoundingClientRect().left < width &&
+          projectile.getBoundingClientRect().right > 0
+        ) {
+          projectile.style = `
+          left:${progressiveDirectionX};
+          top:${checkBoundary()}
             `;
-            }
-            else {
-              alert('game over')
-              window.location.reload()
-            }
-            setTimeout(sendUserData, rankSpeed);
+        } else {
+          // alert("game over");
+          window.location.reload();
         }
-        sendUserData();
+        setTimeout(sendUserData, rankSpeed);
+      }
+      sendUserData();
     }
   });
 });
