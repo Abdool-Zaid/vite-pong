@@ -7,6 +7,7 @@ onMounted(() => {
   let leftPaddle = document.querySelector(".left");
   let width = window.innerWidth;
   let intialY;
+  let progressiveDirectionX
   let height = window.innerHeight;
   let initialDirection;
   let rankSpeed = 100;
@@ -22,6 +23,18 @@ onMounted(() => {
       return projectile.getBoundingClientRect().y + displacement + "px";
     };
   }
+  function strikeProjectile(){
+// if (
+  //( paddle.bottom>=projectile.y && projectile.y<paddle.y) &&
+  // (paddleleft.x~projectile.x||paddleright.x~projectile.x)
+// ){
+// 
+// }
+// else{
+// 
+// }
+return  progressiveDirectionX
+  }
   function checkBoundary() {
     if (
       projectile.getBoundingClientRect().top > 0 &&
@@ -30,11 +43,18 @@ onMounted(() => {
       return intialY();
     } else {
       let transientValue = String(intialY);
-      console.log(transientValue);
       if (transientValue.includes("bottom")) {
-        return projectile.getBoundingClientRect().y + displacement + "px";
+        intialY = () => {
+          return projectile.getBoundingClientRect().y + displacement + "px";
+        };
+        return intialY;
       } else {
-        return projectile.getBoundingClientRect().bottom + displacement + "px";
+        intialY = () => {
+          return (
+            projectile.getBoundingClientRect().bottom + displacement + "px"
+          );
+        };
+        return intialY;
       }
     }
   }
@@ -58,7 +78,7 @@ onMounted(() => {
     top:${rightPaddle.getBoundingClientRect().bottom + displacement + "px"};
     `;
     } else if (key == " ") {
-      rankSpeed > 1 ? rankSpeed - 10 : rankSpeed;
+      // rankSpeed > 1 ? rankSpeed - 10 : rankSpeed;
       let intialSetting = Math.round(Math.random() * 10);
       if (
         Math.round(Math.random() * 10) > 5 ||
@@ -78,13 +98,13 @@ onMounted(() => {
         };
       }
       function sendUserData() {
-        let progressiveDirectionX = initialDirection();
+       progressiveDirectionX = initialDirection();
         if (
           projectile.getBoundingClientRect().left < width &&
           projectile.getBoundingClientRect().right > 0
         ) {
           projectile.style = `
-          left:${progressiveDirectionX};
+          left:${strikeProjectile()};
           top:${checkBoundary()}
             `;
         } else {
