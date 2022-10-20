@@ -1,65 +1,68 @@
 <script setup>
 import { ref, onMounted } from "vue";
-
 const el = ref();
-
 onMounted(() => {
   let display = document.querySelector("h1");
   let projectile = document.querySelector("#ball");
   let leftPaddle = document.querySelector(".left");
   let width = window.innerWidth;
   let height = window.innerHeight;
-  let initialDirection = 0;
-  let displacement = "1px";
+  let initialDirection;
+  let rankSpeed= 100
+  let displacement = 1;
   let rightPaddle = document.querySelector(".right");
   let startTime = Date.now();
-
   window.addEventListener("keypress", (event) => {
     let key = event.key;
     if (key == "q" && leftPaddle.getBoundingClientRect().y > 0) {
       leftPaddle.style = `
-      top:${leftPaddle.getBoundingClientRect().y + displacement};
+      top:${(leftPaddle.getBoundingClientRect().y + displacement) + 'px'};
       `;
+      rightPaddle.style = `
+    top:${(rightPaddle.getBoundingClientRect().y + displacement) + 'px'};
+    `;
     } else if (
       key == "a" &&
       leftPaddle.getBoundingClientRect().bottom < height
     ) {
       leftPaddle.style = `
-      top:${leftPaddle.getBoundingClientRect().bottom + displacement};
+      top:${(leftPaddle.getBoundingClientRect().bottom + displacement) + 'px'};
       `;
-    } else if (key == "p" && rightPaddle.getBoundingClientRect().y > 0) {
       rightPaddle.style = `
-    top:${rightPaddle.getBoundingClientRect().y + displacement};
+    top:${(rightPaddle.getBoundingClientRect().bottom + displacement) + 'px'};
     `;
-    } else if (
-      key == "l" &&
-      rightPaddle.getBoundingClientRect().bottom < height
-    ) {
-      rightPaddle.style = `
-    top:${rightPaddle.getBoundingClientRect().bottom + displacement};
-    `;
-    } else if (key == " ") {
-      fetch("https://yesno.wtf/api")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.answer == "no") {
-            initialDirection = -1;
-          } else {
-            initialDirection = 1;
-          }
-        });
+    }
+     else if (key == " ") {
+      rankSpeed>1?rankSpeed-10:rankSpeed
+let intialSetting= Math.round(Math.random()*10)
+      if( Math.round(Math.random()*10)>5){
+        initialDirection=()=>{
+          return (projectile.getBoundingClientRect().right + displacement) + 'px'
+        }
+            }else {
+              initialDirection= ()=>{
+                return (projectile.getBoundingClientRect().left +  displacement) +'px'
+              }
+            }
+      function sendUserData() {
+        let progressiveDirectionX=initialDirection()
+        if (projectile.getBoundingClientRect().left < width && projectile.getBoundingClientRect().right > 0) {
+            projectile.style = `
+            left:${progressiveDirectionX};
+top:${
+  console.log(initialDirection())
+}
+            `;
+            }
+            else {
+              alert('game over')
+              window.location.reload()
+            }
+            setTimeout(sendUserData, rankSpeed);
+        }
+        sendUserData();
     }
   });
-  function sendUserData() {
-    if (projectile.getBoundingClientRect().bottom < height && projectile.getBoundingClientRect().y > 0) {
-      projectile.style = `
-        top:${projectile.getBoundingClientRect().bottom + displacement};
-        `;
-      }
-      console.log(projectile.getBoundingClientRect().bottom, width);
-    setTimeout(sendUserData, 1000);
-  }
-  sendUserData();
 });
 </script>
 
