@@ -145,14 +145,7 @@ onMounted(() => {
 </template>
 
 <style>
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-::-webkit-scrollbar {
-  display: none;
-}
+
 html {
   position: fixed;
   top: 0;
