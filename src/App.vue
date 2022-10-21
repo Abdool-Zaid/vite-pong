@@ -124,8 +124,8 @@ onMounted(() => {
           top:${checkBoundary()}
             `;
         } else {
-          // alert(display.innerHTML);
           window.location.reload();
+          alert(display.innerHTML);
         }
         setTimeout(sendUserData, rankSpeed);
       }
