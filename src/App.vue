@@ -139,6 +139,7 @@ onMounted(() => {
   <h1 @click="sendUserData">score</h1>
   <div class="bodyContainer">
     <div class="paddle left"></div>
+    <div class="paddle center left"></div>
     <div id="ball"></div>
     <div class="paddle right"></div>
   </div>
@@ -169,6 +170,14 @@ html {
   left: 2%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+.center{
+  z-index: 10;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
 }
 .right {
   position: fixed;
