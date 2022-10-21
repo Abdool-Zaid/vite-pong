@@ -24,6 +24,12 @@ onMounted(() => {
   }
   function strikeProjectile() {
     if (
+      projectile.getBoundingClientRect().y <
+        leftPaddle.getBoundingClientRect().bottom &&
+      projectile.getBoundingClientRect().y >
+        leftPaddle.getBoundingClientRect().top
+    ) {
+      if (
       projectile.getBoundingClientRect().left <
       leftPaddle.getBoundingClientRect().left
     ) {
@@ -38,12 +44,6 @@ onMounted(() => {
         return projectile.getBoundingClientRect().left + displacement + "px";
       };
     }
-    if (
-      projectile.getBoundingClientRect().y <
-        leftPaddle.getBoundingClientRect().bottom &&
-      projectile.getBoundingClientRect().y >
-        leftPaddle.getBoundingClientRect().top
-    ) {
     }
     return progressiveDirectionX;
   }
@@ -168,7 +168,7 @@ html {
 .paddle {
 
   width: 1em;
-  height: 7vw;
+  height: 20vw;
   background-color: red;
 }
 .left {
