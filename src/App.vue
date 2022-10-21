@@ -124,7 +124,12 @@ onMounted(() => {
           top:${checkBoundary()}
             `;
         } else {
-          window.location.reload();
+        projectile.style= `
+        left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  
+        `
           alert(display.innerHTML);
         }
         setTimeout(sendUserData, rankSpeed);
@@ -186,8 +191,8 @@ html {
   transform: translate(-50%, -50%);
 }
 #ball {
-  height: 3em;
   aspect-ratio: 1;
+  height: 3em;
   border-radius: 50%;
   position: fixed;
   left: 50%;
