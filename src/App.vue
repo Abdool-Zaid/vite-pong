@@ -7,13 +7,12 @@ onMounted(() => {
   let leftPaddle = document.querySelector(".left");
   let width = window.innerWidth;
   let intialY;
-  let progressiveDirectionX
+  let progressiveDirectionX;
   let height = window.innerHeight;
   let initialDirection;
   let rankSpeed = 100;
   let displacement = 1;
   let rightPaddle = document.querySelector(".right");
-  let startTime = Date.now();
   if (Math.round(Math.random() * 10) < 5) {
     intialY = () => {
       return projectile.getBoundingClientRect().bottom + displacement + "px";
@@ -23,17 +22,30 @@ onMounted(() => {
       return projectile.getBoundingClientRect().y + displacement + "px";
     };
   }
-  function strikeProjectile(){
-// if (
-  //( paddle.bottom>=projectile.y && projectile.y<paddle.y) &&
-  // (paddleleft.x~projectile.x||paddleright.x~projectile.x)
-// ){
-// 
-// }
-// else{
-// 
-// }
-return  progressiveDirectionX
+  function strikeProjectile() {
+    if (
+      projectile.getBoundingClientRect().left <
+      leftPaddle.getBoundingClientRect().left
+    ) {
+      progressiveDirectionX = () => {
+        return projectile.getBoundingClientRect().right + displacement + "px";
+      };
+    } else if (
+      projectile.getBoundingClientRect().left >
+      rightPaddle.getBoundingClientRect().right
+    ) {
+      progressiveDirectionX = () => {
+        return projectile.getBoundingClientRect().left + displacement + "px";
+      };
+    }
+    if (
+      projectile.getBoundingClientRect().y <
+        leftPaddle.getBoundingClientRect().bottom &&
+      projectile.getBoundingClientRect().y >
+        leftPaddle.getBoundingClientRect().top
+    ) {
+    }
+    return progressiveDirectionX;
   }
   function checkBoundary() {
     if (
@@ -60,7 +72,7 @@ return  progressiveDirectionX
   }
   window.addEventListener("keypress", (event) => {
     let key = event.key;
-    if (key == "q" && leftPaddle.getBoundingClientRect().y > 0) {
+    if (key == "z" && leftPaddle.getBoundingClientRect().y > 0) {
       leftPaddle.style = `
       top:${leftPaddle.getBoundingClientRect().y + displacement + "px"};
       `;
@@ -68,7 +80,7 @@ return  progressiveDirectionX
     top:${rightPaddle.getBoundingClientRect().y + displacement + "px"};
     `;
     } else if (
-      key == "a" &&
+      key == "x" &&
       leftPaddle.getBoundingClientRect().bottom < height
     ) {
       leftPaddle.style = `
@@ -78,7 +90,9 @@ return  progressiveDirectionX
     top:${rightPaddle.getBoundingClientRect().bottom + displacement + "px"};
     `;
     } else if (key == " ") {
-      // rankSpeed > 1 ? rankSpeed - 10 : rankSpeed;
+      let startTime = Date.now();
+      rankSpeed > 1 ? rankSpeed - 10 : rankSpeed;
+
       let intialSetting = Math.round(Math.random() * 10);
       if (
         Math.round(Math.random() * 10) > 5 ||
@@ -98,7 +112,9 @@ return  progressiveDirectionX
         };
       }
       function sendUserData() {
-       progressiveDirectionX = initialDirection();
+        display.innerHTML = `
+      score: ${(Date.now() - startTime) / 100}`;
+        progressiveDirectionX = initialDirection();
         if (
           projectile.getBoundingClientRect().left < width &&
           projectile.getBoundingClientRect().right > 0
@@ -108,7 +124,7 @@ return  progressiveDirectionX
           top:${checkBoundary()}
             `;
         } else {
-          // alert("game over");
+          // alert(display.innerHTML);
           window.location.reload();
         }
         setTimeout(sendUserData, rankSpeed);
@@ -150,6 +166,7 @@ html {
   height: 100vh;
 }
 .paddle {
+
   width: 1em;
   height: 7vw;
   background-color: red;
